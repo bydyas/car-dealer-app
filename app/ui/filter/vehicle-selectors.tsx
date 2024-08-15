@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import { fetchVehicles } from "@/app/lib/data";
 import { FetchStatus, IGetMakesForVehicleType, IVehicleType } from "@/app/lib/definitions";
 import { vehicleModelYears } from "@/app/lib/placeholders";
 import Select from "../select";
+import Loader from "../loader";
 
 export default function VehicleSelectors() {
   const router = useRouter()
@@ -30,9 +32,7 @@ export default function VehicleSelectors() {
   }, []);
 
   if (status === FetchStatus.Loading) {
-    return (
-      <div>Loading...</div>
-    );
+    return <Loader />
   }
 
   if (status === FetchStatus.Error) {
@@ -42,7 +42,7 @@ export default function VehicleSelectors() {
   }
 
   return (
-    <section className="flex min-h-screen flex-col items-center justify-between p-24">
+    <section className="">
       <form className="flex flex-col gap-3">
         <div className="flex gap-4">
           <Select 
@@ -63,12 +63,19 @@ export default function VehicleSelectors() {
         <button
           disabled={!selectedVehicleTypeId || !selectedVehicleModelYear}
           onClick={() => router.push(`/result/${selectedVehicleTypeId}/${selectedVehicleModelYear}`)}
-          className="h-12 bg-sky-600 rounded-lg text-lg bold uppercase transition-all hover:scale-95 cursor-pointer disabled:opacity-25 disabled:pointer-events-none" 
+          className="h-12 bg-red-400 text-white rounded-lg text-lg bold uppercase transition-all hover:scale-95 cursor-pointer disabled:opacity-25 disabled:pointer-events-none" 
           type="button"
         >
           Next
         </button>
       </form>
+      <Image
+        className="animate-bounce pointer-events-none mt-24 mx-auto"
+        src="/icons/car.svg"
+        width={128}
+        height={128}
+        alt="Picture of the car"
+      />
     </section>
   );
 }

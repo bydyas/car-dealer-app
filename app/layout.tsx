@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import clsx from 'clsx';
 
 import { inter } from "./ui/fonts";
 import "./ui/globals.css";
@@ -15,7 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={clsx(inter.className, "bg-white")}>
+        <header className="h-80 bg-red-400 w-full flex justify-center items-center">
+          <h1 className="text-white text-7xl uppercase font-black max-w-[300px]">Car Dealer App</h1>
+        </header>
+        {children}
+      </body>
     </html>
   );
 }

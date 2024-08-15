@@ -5,6 +5,20 @@ export interface IGetMakesForVehicleType {
   Results: IVehicleType[];
 }
 
+export interface IGetModelsForMakeIdYear {
+  Count: number;
+  Message: string;
+  SearchCriteria: string;
+  Results: IVehicleModel[];
+}
+
+export interface IVehicleModel {
+  "Make_ID": number;
+  "Make_Name": string;
+  "Model_ID": number;
+  "Model_Name": string;
+}
+
 export interface IVehicleType {
   MakeId: number;
   MakeName: string;
