@@ -1,3 +1,7 @@
+export interface ICustomError {
+  message: string;
+}
+
 export interface IGetMakesForVehicleType {
   Count: number;
   Message: string;

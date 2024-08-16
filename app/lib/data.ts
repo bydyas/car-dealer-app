@@ -1,29 +1,37 @@
 import { unstable_noStore as noStore } from 'next/cache';
-import { IGetMakesForVehicleType, IGetModelsForMakeIdYear } from './definitions';
+import { ICustomError, IGetMakesForVehicleType, IGetModelsForMakeIdYear } from './definitions';
 
-export async function fetchVehicles(): Promise<IGetMakesForVehicleType> {
+export async function fetchVehicles(): Promise<IGetMakesForVehicleType | ICustomError> {
   noStore();
 
   try {
-    const cars = await fetch(`${process.env.NEXT_PUBLIC_API_VEHICLES}/GetMakesForVehicleType/car?format=json`);
-    return await cars.json();
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_VEHICLES}/GetMakesForVehicleType/car?format=json`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch types.');
+    }
+    return await response.json();
   } catch (error) {
-    console.log('Failed to fetch cars');
-    throw new Error('Failed to fetch cars.');
+    return ({
+      message: (error as Error).message,
+    });
   }
 }
 
 export async function fetchVehicleModels({ makeId, year}: { 
   makeId: string; 
   year: string 
-}): Promise<IGetModelsForMakeIdYear> {
+}): Promise<IGetModelsForMakeIdYear | ICustomError> {
   noStore();
 
   try {
-    const models = await fetch(`${process.env.NEXT_PUBLIC_API_VEHICLES}/GetModelsForMakeIdYear/makeId/${makeId}/modelyear/${year}?format=json`);
-    return await models.json();
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_VEHICLES}/GetModelsForMakeIdYear/makeId/${makeId}/modelyear/${year}?format=json`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch models.');
+    }
+    return await response.json();
   } catch (error) {
-    console.log('Failed to fetch cars');
-    throw new Error('Failed to fetch cars.');
+    return ({
+      message: (error as Error).message,
+    });
   }
 }
